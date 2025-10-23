@@ -2,7 +2,7 @@
 
 **CS 420 - Parallel Computing**  
 **Release Date:** September 30, 2025  
-**Due Date:** October 21, 2025, 11:59 PM  
+**Due Date:** October 30, 2025, 11:59 PM  
 **Points:** 25  
 
 ## Overview
