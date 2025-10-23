@@ -1,4 +1,4 @@
-// ==================== validate.py ====================
+# ==================== validate.py ====================
 #!/usr/bin/env python3
 """
 Python validation script for comparing N-Body simulation outputs

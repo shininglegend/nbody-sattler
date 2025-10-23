@@ -42,39 +42,38 @@ __global__ void nbody_kernel_naive(
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if (tid >= n_particles) return;
     
-    // TODO: Student implementation
+    // Hint: Use the compute_force helper function
     // 1. Load particle i data
+    Particle p = particles_in[tid];
+    
     // 2. Initialize force accumulator to zero
+    float3 total_force = {0.0f, 0.0f, 0.0f};
+    
     // 3. Loop through all particles j != i
     //    - Compute pairwise force
     //    - Accumulate forces
-    // 4. Update velocity: v_new = v_old + (F/m) * dt
-    // 5. Update position: p_new = p_old + v_new * dt
-    // 6. Write updated particle to particles_out
-    
-    // Hint: Use the compute_force helper function
-    Particle p = particles_in[tid];
-    
-    float3 total_force = {0.0f, 0.0f, 0.0f};
-    
-    // Your code here...
-    
-    // Example structure (to be completed by student):
-    // for (int j = 0; j < n_particles; j++) {
-    //     if (j != tid) {
-    //         Particle other = particles_in[j];
-    //         float3 force = compute_force(p, other, G, eps_squared);
-    //         total_force.x += force.x;
-    //         total_force.y += force.y;
-    //         total_force.z += force.z;
-    //     }
-    // }
+    for (int j = 0; j < n_particles; j++) {
+        if (j != tid) {
+            Particle other = particles_in[j];
+            float3 force = compute_force(p, other, G, eps_squared);
+            total_force.x += force.x;
+            total_force.y += force.y;
+            total_force.z += force.z;
+        }
+    }
     
     // Update velocity and position
-    // ...
+    // 4. Update velocity: v_new = v_old + (F/m) * dt
+    p.velocity.x = p.velocity.x + (total_force.x / p.mass) * dt;
+    p.velocity.y = p.velocity.y + (total_force.y / p.mass) * dt;
+    p.velocity.z = p.velocity.z + (total_force.z / p.mass) * dt;
+    // 5. Update position: p_new = p_old + v_new * dt
+    p.position.x = p.position.x + p.velocity.x * dt;
+    p.position.y = p.position.y + p.velocity.y * dt;
+    p.position.z = p.position.z + p.velocity.z * dt;
     
-    // Write result
-    // particles_out[tid] = p;
+    // 6. Write updated particle to particles_out
+    particles_out[tid] = p;
 }
 
 
