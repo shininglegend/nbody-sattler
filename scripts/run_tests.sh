@@ -1,4 +1,3 @@
-// ==================== run_tests.sh ====================
 #!/bin/bash
 # Self-testing script for N-Body simulation
 
